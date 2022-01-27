@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <img id="cabecera" src="imgs/monteFuji.jpeg">
+    <div id="filtro"></div>
+    <div id="app">
+        <div id="padre">
+            <input type="text" id="buscador" placeholder="Buscar..." @keyup="buscar" v-model="textoBuscar">
+            <input id="anadir" type="text" v-model="nomTarea" placeholder="Insertar tarea..."  @keyup.enter="insertar_tarea">
+            
+            <ul v-show="tareas.length>0">
+                <transition-group name="slide-fade">
+                    <li v-for="(tarea,index) in tareasFiltradas" :key="index"><span @click="completarTarea(index)" :class = "{completada:tarea.completada}"> {{tarea.nombre}}  {{tarea.prioridad == 0 ? "alta":tarea.prioridad == 1 ? "media":"baja"}}</span>
+                        <button @click="borrarTarea(index)">BORRAR</button>
+                        <section>
+                            <span @click="prioridadAlta(index)">Alta</span>
+                            <span @click="prioridadMedia(index)">Media</span>
+                            <span @click="prioridadBaja(index)">Baja</span>
+                        </section>
+                </li>
+                </transition-group>
+                <section id="botones">
+                    <span @click="mostrarTodas">Todas</span><span @click="mostrarCompletadas">Completadas</span><span @click="mostrarNoCompletas">Sin completar</span>
+                </section>
+            </ul>
+            <p>Hay {{tareas.length}} tareas en total y {{tareasCompletas}} completadas</p>
+            
+            <br><br><br>
+            <button v-show="tareasCompletas>0" v-on:click="borrarCompletadas">Borrar tareas completadas</button>
+        </div>
+    </div>
+</body>
+</html>
